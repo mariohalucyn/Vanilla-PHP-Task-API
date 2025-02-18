@@ -1,4 +1,4 @@
-# Vanilla PHP Task API
+<p align="center"><a href="https://www.php.net/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/1920px-PHP-logo.svg.png" width="400" alt="PHP Logo"></a></p>
 
 ## Overview
 **lightweight and minimalistic RESTful API** built with **pure PHP**, designed for managing to-do lists efficiently. It follows **REST principles**, requires **no frameworks**, and provides endpoints for **creating, reading, updating, and deleting tasks**.
