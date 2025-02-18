@@ -1,0 +1,19 @@
+{
+    "name": "Vanilla PHP Task API",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kacper Gajda",
+            "email": "kgajda226@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+      "ext-mysqli": "*",
+      "ext-http": "*"
+    }
+}
