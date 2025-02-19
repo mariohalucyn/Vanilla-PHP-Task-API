@@ -1,5 +1,5 @@
 {
-    "name": "Vanilla PHP Task API",
+    "name": "vanilla-php/task-api",
     "autoload": {
         "psr-4": {
             "App\\": "src/"
