@@ -23,15 +23,13 @@ class Register {
 
         $db->begin_transaction();
 
-        $stmt = $db->prepare("SELECT 1 FROM `users` WHERE `email` = ?");
-        if (!$stmt) {
+        if (!$stmt = $db->prepare("SELECT 1 FROM `users` WHERE `email` = ?")) {
             Response::json([
                 'success' => false,
                 'message' => 'Database error'
             ], 500);
-        }
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
+        };
+        $stmt->bind_param("s", $email) && $stmt->execute();
         if ($stmt->get_result()->num_rows > 0) {
             Response::json([
                 'success' => false,

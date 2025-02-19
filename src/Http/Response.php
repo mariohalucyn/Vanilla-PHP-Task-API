@@ -7,7 +7,6 @@ class Response {
         header('Content-Type: application/json');
         http_response_code($code);
         echo json_encode($data);
-
         exit;
     }
 }
