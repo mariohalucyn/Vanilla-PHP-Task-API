@@ -32,7 +32,7 @@ switch ($requestUri) {
 
     case '/api/auth/logout':
         if ($requestMethod == 'POST') {
-            AuthSession::destroy(json_decode(file_get_contents("php://input"), true));
+            AuthSession::destroy();
         } else {
             Response::json([
                 'success' => false,
