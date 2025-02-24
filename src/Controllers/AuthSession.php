@@ -11,6 +11,8 @@ require_once __DIR__ . '/../../config.php';
 
 class AuthSession {
     public static function store(array $request): void {
+        session_start();
+
         $db = Database::getInstance()->connection;
 
         $email = strtolower(trim($request['email']));
@@ -34,6 +36,7 @@ class AuthSession {
 
         $stmt->bind_param("s", $email) && $stmt->execute();
         $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
         if ($result->num_rows === 0) {
             Response::json([
@@ -42,12 +45,14 @@ class AuthSession {
             ], 422);
         }
 
-        if (!password_verify($password, $result->fetch_assoc()['password'])) {
+        if (!password_verify($password, $user['password'])) {
             Response::json([
                 'success' => false,
                 'message' => 'Incorrect password'
             ], 422);
         }
+
+        $_SESSION['id'] = $user['id'];
 
         Response::json([
             'success' => true,
