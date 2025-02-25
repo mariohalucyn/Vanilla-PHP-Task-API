@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
 
+use App\Controllers\Controller;
 use App\Http\Response;
 use App\Initializers\Database;
 
-class Register {
+class Register extends Controller {
     public static function store(array $request): void {
         $db = Database::getInstance()->connection;
 

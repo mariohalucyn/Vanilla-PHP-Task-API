@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
 
+use App\Controllers\Controller;
 use App\Http\Response;
 use App\Initializers\Database;
 
-require_once __DIR__ . '/../Initializers/Database.php';
-require_once __DIR__ . '/../Http/Response.php';
-require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../../Initializers/Database.php';
+require_once __DIR__ . '/../../Http/Response.php';
+require_once __DIR__ . '/../../../config.php';
 
-class AuthSession {
+class AuthSession extends Controller {
     public static function store(array $request): void {
         $db = Database::getInstance()->connection;
 

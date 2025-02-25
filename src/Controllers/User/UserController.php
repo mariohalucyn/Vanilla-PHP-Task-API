@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\User;
 
+use App\Controllers\Controller;
 use App\Http\Response;
 use App\Initializers\Database;
 
-class User {
+class User extends Controller {
     public static function index(): void {
         $db = Database::getInstance()->connection;
 
