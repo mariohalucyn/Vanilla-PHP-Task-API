@@ -5,9 +5,10 @@ namespace App\Controllers\Auth;
 use App\Controllers\Controller;
 use App\Http\Response;
 use App\Initializers\Database;
+use JetBrains\PhpStorm\NoReturn;
 
 class RegisteredUserController extends Controller {
-    public static function store(array $request): void {
+    #[NoReturn] public static function store(array $request): void {
         $db = Database::getInstance()->connection;
 
         $first_name = trim($request['first_name']);

@@ -48,7 +48,6 @@ class UserController extends Controller {
                     'success' => true,
                     'message' => 'No changes made'
                 ]);
-                return;
             }
 
             new User()->update($id, $firstName, $lastName);

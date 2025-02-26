@@ -40,6 +40,26 @@ class User {
     /**
      * @throws Exception
      */
+    public function findByEmail(string $email): ?array {
+        $stmt = $this->db->prepare("SELECT id, first_name, last_name, email, password FROM users WHERE email = ?");
+        if (!$stmt) {
+            throw new Exception('Database error', 500);
+        }
+
+        $stmt->bind_param("s", $email);
+        if (!$stmt->execute()) {
+            throw new Exception('Database error', 500);
+        }
+
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        return $user ?: null;
+    }
+
+    /**
+     * @throws Exception
+     */
     public function update(int $id, string $firstName, string $lastName): void {
         $stmt = $this->db->prepare("UPDATE users SET first_name = ?, last_name = ? WHERE id = ?");
         if (!$stmt) {

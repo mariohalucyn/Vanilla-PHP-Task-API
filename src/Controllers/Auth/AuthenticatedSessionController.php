@@ -1,79 +1,51 @@
 <?php
 
+
 namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use App\Http\Response;
-use App\Initializers\Database;
-
-require_once __DIR__ . '/../../Initializers/Database.php';
-require_once __DIR__ . '/../../Http/Response.php';
-require_once __DIR__ . '/../../../config.php';
+use App\Models\User;
+use Exception;
+use JetBrains\PhpStorm\NoReturn;
 
 class AuthenticatedSessionController extends Controller {
-    public static function store(array $request): void {
-        $db = Database::getInstance()->connection;
+    public function store(array $request): void {
+        try {
+            $email = strtolower(trim($request['email'] ?? ''));
+            $password = trim($request['password'] ?? '');
 
-        $email = strtolower(trim($request['email']));
-        $password = trim($request['password']);
-        if (empty($email) || empty($password)) {
+            if (empty($email) || empty($password)) {
+                throw new Exception('All fields are required', 422);
+            }
+
+            $user = new User()->findByEmail($email);
+
+            if (!$user || !password_verify($password, $user['password'])) {
+                throw new Exception('Invalid email or password', 422);
+            }
+
+            $_SESSION['id'] = $user['id'];
+
+            Response::json([
+                'success' => true,
+                'message' => 'User logged in successfully',
+            ]);
+        } catch (Exception $e) {
             Response::json([
                 'success' => false,
-                'message' => 'All fields are required'
-            ], 422);
+                'message' => $e->getMessage()
+            ], $e->getCode());
         }
-
-        $db->begin_transaction();
-
-        if (!$stmt = $db->prepare("SELECT id, first_name, last_name, email, password FROM `users` WHERE `email` = ?")) {
-            Response::json([
-                'success' => false,
-                'message' => "Database error"
-            ], 500);
-        };
-
-        $stmt->bind_param("s", $email) && $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-
-        if ($result->num_rows === 0) {
-            Response::json([
-                'success' => false,
-                'message' => 'UserController does not exist'
-            ], 422);
-        }
-
-        if (!password_verify($password, $user['password'])) {
-            Response::json([
-                'success' => false,
-                'message' => 'Incorrect password'
-            ], 422);
-        }
-
-        $_SESSION['id'] = $user['id'];
-
-        Response::json([
-            'success' => true,
-            'message' => 'UserController logged in successfully',
-        ]);
     }
 
-    public static function destroy(): void {
-        $_SESSION = array();
-
-        if (ini_get("session.use_cookies")) {
-            $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
-            );
-        }
-
+    #[NoReturn] public function destroy(): void {
+        session_unset();
         session_destroy();
 
         Response::json([
             'success' => true,
-            'message' => 'UserController logged out successfully'
+            'message' => 'User logged out successfully'
         ]);
     }
 }
