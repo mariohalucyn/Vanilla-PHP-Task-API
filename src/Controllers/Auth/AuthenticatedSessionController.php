@@ -7,7 +7,6 @@ use App\Controllers\Controller;
 use App\Http\Response;
 use App\Models\User;
 use Exception;
-use JetBrains\PhpStorm\NoReturn;
 
 class AuthenticatedSessionController extends Controller {
     public function store(array $request): void {
@@ -39,7 +38,7 @@ class AuthenticatedSessionController extends Controller {
         }
     }
 
-    #[NoReturn] public function destroy(): void {
+    public function destroy(): void {
         session_unset();
         session_destroy();
 

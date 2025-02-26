@@ -16,7 +16,7 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 switch ($requestUri) {
     case '/api/auth/login':
         if ($requestMethod == 'POST') {
-            AuthenticatedSessionController::store(json_decode(file_get_contents("php://input"), true));
+            new AuthenticatedSessionController()->store(json_decode(file_get_contents("php://input"), true));
         } else {
             Response::json([
                 'success' => false,
@@ -27,7 +27,7 @@ switch ($requestUri) {
 
     case '/api/auth/logout':
         if ($requestMethod == 'POST') {
-            AuthenticatedSessionController::destroy();
+            new AuthenticatedSessionController()->destroy();
         } else {
             Response::json([
                 'success' => false,
@@ -38,7 +38,7 @@ switch ($requestUri) {
 
     case '/api/auth/register':
         if ($requestMethod == 'POST') {
-            RegisteredUserController::store(json_decode(file_get_contents("php://input"), true));
+            new RegisteredUserController()->store(json_decode(file_get_contents("php://input"), true));
         } else {
             Response::json([
                 'success' => false,
@@ -49,9 +49,9 @@ switch ($requestUri) {
 
     case '/api/user':
         if ($requestMethod == 'GET') {
-            UserController::index();
+            new UserController()->index();
         } elseif ($requestMethod == 'PUT') {
-            UserController::update(json_decode(file_get_contents("php://input"), true));
+            new UserController()->update(json_decode(file_get_contents("php://input"), true));
         } else {
             Response::json([
                 'success' => false,

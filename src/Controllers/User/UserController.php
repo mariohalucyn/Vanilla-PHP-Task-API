@@ -9,7 +9,7 @@ use App\Models\User;
 use Exception;
 
 class UserController extends Controller {
-    public static function index(): void {
+    public function index(): void {
         try {
             $id = AuthMiddleware::getAuthenticatedUserId();
 
@@ -29,7 +29,7 @@ class UserController extends Controller {
         }
     }
 
-    public static function update(array $request): void {
+    public function update(array $request): void {
         try {
             $id = AuthMiddleware::getAuthenticatedUserId();
 
