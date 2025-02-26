@@ -6,7 +6,7 @@ use App\Controllers\Controller;
 use App\Http\Response;
 use App\Initializers\Database;
 
-class Register extends Controller {
+class RegisteredUserController extends Controller {
     public static function store(array $request): void {
         $db = Database::getInstance()->connection;
 

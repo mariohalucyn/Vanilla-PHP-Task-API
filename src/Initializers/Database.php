@@ -28,6 +28,7 @@ class Database {
         $user = $_ENV['DB_USER'];
         $password = $_ENV['DB_PASSWORD'];
         $name = $_ENV['DB_NAME'];
-        $this->connection = new mysqli($host, $user, $password, $name);
+        $port = $_ENV['DB_PORT'];
+        $this->connection = new mysqli($host, $user, $password, $name, $port);
     }
 }

@@ -10,13 +10,12 @@ require_once __DIR__ . '/../../Initializers/Database.php';
 require_once __DIR__ . '/../../Http/Response.php';
 require_once __DIR__ . '/../../../config.php';
 
-class AuthSession extends Controller {
+class AuthenticatedSessionController extends Controller {
     public static function store(array $request): void {
         $db = Database::getInstance()->connection;
 
         $email = strtolower(trim($request['email']));
         $password = trim($request['password']);
-
         if (empty($email) || empty($password)) {
             Response::json([
                 'success' => false,
@@ -40,7 +39,7 @@ class AuthSession extends Controller {
         if ($result->num_rows === 0) {
             Response::json([
                 'success' => false,
-                'message' => 'User does not exist'
+                'message' => 'UserController does not exist'
             ], 422);
         }
 
@@ -55,7 +54,7 @@ class AuthSession extends Controller {
 
         Response::json([
             'success' => true,
-            'message' => 'User logged in successfully',
+            'message' => 'UserController logged in successfully',
         ]);
     }
 
@@ -74,7 +73,7 @@ class AuthSession extends Controller {
 
         Response::json([
             'success' => true,
-            'message' => 'User logged out successfully'
+            'message' => 'UserController logged out successfully'
         ]);
     }
 }

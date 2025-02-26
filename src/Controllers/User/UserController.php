@@ -4,40 +4,65 @@ namespace App\Controllers\User;
 
 use App\Controllers\Controller;
 use App\Http\Response;
-use App\Initializers\Database;
+use App\Middleware\AuthMiddleware;
+use App\Models\User;
+use Exception;
 
-class User extends Controller {
+class UserController extends Controller {
     public static function index(): void {
-        $db = Database::getInstance()->connection;
+        try {
+            $id = AuthMiddleware::getAuthenticatedUserId();
 
-        if (!isset($_SESSION['id'])) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Unauthorized']);
-            exit();
-        }
+            $user = new User()->findById($id);
 
-        $id = $_SESSION['id'];
-        if (!$stmt = $db->prepare("SELECT * FROM users WHERE id = ?")) {
+            Response::json([
+                'success' => true,
+                'message' => 'User found',
+                'data' => $user
+            ]);
+
+        } catch (Exception $e) {
             Response::json([
                 'success' => false,
-                'message' => 'Database error'
-            ], 500);
+                'message' => $e->getMessage()
+            ], $e->getCode());
         }
-        $stmt->bind_param("i", $id) && $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
+    }
 
-        if ($result->num_rows === 0) {
+    public static function update(array $request): void {
+        try {
+            $id = AuthMiddleware::getAuthenticatedUserId();
+
+            $user = new User()->findById($id);
+
+            // TODO: Handle other fields instead of first_name and last_name
+            $firstName = isset($request['first_name']) ? trim($request['first_name']) : $user['first_name'];
+            $lastName = isset($request['last_name']) ? trim($request['last_name']) : $user['last_name'];
+
+            if ($firstName === '' || $lastName === '') {
+                throw new Exception('Invalid input: first name and last name cannot be empty', 400);
+            }
+
+            if ($firstName === $user['first_name'] && $lastName === $user['last_name']) {
+                Response::json([
+                    'success' => true,
+                    'message' => 'No changes made'
+                ]);
+                return;
+            }
+
+            new User()->update($id, $firstName, $lastName);
+
+            Response::json([
+                'success' => true,
+                'message' => 'User updated successfully'
+            ]);
+
+        } catch (Exception $e) {
             Response::json([
                 'success' => false,
-                'message' => 'User not found'
-            ], 400);
+                'message' => $e->getMessage()
+            ], $e->getCode());
         }
-
-        Response::json([
-            'success' => true,
-            'message' => 'User found',
-            'data' => $user
-        ]);
     }
 }
