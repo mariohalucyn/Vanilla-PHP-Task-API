@@ -34,6 +34,7 @@ class AuthSession {
 
         $stmt->bind_param("s", $email) && $stmt->execute();
         $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
         if ($result->num_rows === 0) {
             Response::json([
@@ -42,12 +43,14 @@ class AuthSession {
             ], 422);
         }
 
-        if (!password_verify($password, $result->fetch_assoc()['password'])) {
+        if (!password_verify($password, $user['password'])) {
             Response::json([
                 'success' => false,
                 'message' => 'Incorrect password'
             ], 422);
         }
+
+        $_SESSION['id'] = $user['id'];
 
         Response::json([
             'success' => true,
@@ -55,6 +58,22 @@ class AuthSession {
         ]);
     }
 
-    public static function destroy(array $request): void {
+    public static function destroy(): void {
+        $_SESSION = array();
+
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        session_destroy();
+
+        Response::json([
+            'success' => true,
+            'message' => 'User logged out successfully'
+        ]);
     }
 }
