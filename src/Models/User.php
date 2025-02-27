@@ -41,7 +41,7 @@ class User {
      * @throws Exception
      */
     public function findByEmail(string $email): ?array {
-        $stmt = $this->db->prepare("SELECT id, first_name, last_name, email, password FROM users WHERE email = ?");
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
         if (!$stmt) {
             throw new Exception('Database error', 500);
         }
