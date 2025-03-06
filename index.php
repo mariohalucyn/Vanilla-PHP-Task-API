@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
-require_once __DIR__ . "/../src/Http/Response.php";
-require_once __DIR__ . "/../src/Controllers/Controller.php";
-require_once __DIR__ . "/../config.php";
+require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/src/Http/Response.php";
+require_once __DIR__ . "/src/Controllers/Controller.php";
+require_once __DIR__ . "/config.php";
 
 use App\Controllers\Auth\AuthenticatedSessionController;
 use App\Controllers\Auth\RegisteredUserController;
@@ -52,6 +52,8 @@ switch ($requestUri) {
             new UserController()->index();
         } elseif ($requestMethod == 'PUT') {
             new UserController()->update(json_decode(file_get_contents("php://input"), true));
+        } elseif ($requestMethod == 'DELETE') {
+            new UserController()->destroy();
         } else {
             Response::json([
                 'success' => false,

@@ -70,9 +70,19 @@ class User {
         if (!$stmt->execute()) {
             throw new Exception('Database error', 500);
         }
+    }
 
+    /**
+     * @throws Exception
+     */
+    public function delete(int $id): void {
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
+        if (!$stmt) {
+            throw new Exception('Database error', 500);
+        }
+        $stmt->bind_param("i", $id);
         if (!$stmt->execute()) {
-            throw new Exception('Database error (execute failed)', 500);
+            throw new Exception('Database error', 500);
         }
     }
 }

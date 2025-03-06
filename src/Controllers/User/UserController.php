@@ -64,4 +64,30 @@ class UserController extends Controller {
             ], $e->getCode());
         }
     }
+
+    public function destroy(): void {
+        try {
+            $id = AuthMiddleware::getAuthenticatedUserId();
+            $user = new User()->findById($id);
+            if (!$user) {
+                throw new Exception('User not found', 404);
+            }
+
+            new User()->delete($id);
+
+            session_unset();
+            session_destroy();
+
+            Response::json([
+                'success' => true,
+                'message' => 'User deleted',
+                'user' => $user
+            ]);
+        } catch (Exception $e) {
+            Response::json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], $e->getCode());
+        }
+    }
 }

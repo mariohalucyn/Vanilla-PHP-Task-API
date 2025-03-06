@@ -10,12 +10,12 @@ use Exception;
 class AuthenticatedSessionController extends Controller {
     public function store(array $request): void {
         try {
+            $email = strtolower(trim($request['email']));
+            $password = trim($request['password']);
+
             if (empty($email) || empty($password)) {
                 throw new Exception('All fields are required', 422);
             }
-
-            $email = strtolower(trim($request['email']));
-            $password = trim($request['password']);
 
             $user = new User()->findByEmail($email);
             if (!$user || !password_verify($password, $user['password'])) {
