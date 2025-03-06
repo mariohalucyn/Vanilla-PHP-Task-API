@@ -1,9 +1,13 @@
 <p align="center"><a href="https://www.php.net/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/1920px-PHP-logo.svg.png" width="400" alt="PHP Logo"></a></p>
 
 ## Overview
-**lightweight and minimalistic RESTful API** built with **pure PHP**, designed for managing to-do lists efficiently. It follows **REST principles**, requires **no frameworks**, and provides endpoints for **creating, reading, updating, and deleting tasks**.
+
+**lightweight and minimalistic RESTful API** built with **pure PHP**, designed for managing to-do lists efficiently. It
+follows **REST principles**, requires **no frameworks**, and provides endpoints for **creating, reading, updating, and
+deleting tasks**.
 
 ## Features
+
 - Pure PHP with no dependencies
 - CRUD operations for tasks
 - RESTful API design
@@ -29,7 +33,9 @@
    Use Postman, cURL, or any REST client to interact with the API.
 
 ## Configuration
+
 Update `.env` to match your database settings:
+
 ```dotenv
 DB_HOST=127.0.0.1
 DB_USER=myuser
@@ -38,4 +44,5 @@ DB_NAME=mydatabase
 ```
 
 ## Contributions
+
 Feel free to fork, submit issues, or contribute! PRs are welcome. 😊

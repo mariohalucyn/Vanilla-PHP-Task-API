@@ -81,7 +81,6 @@ class UserController extends Controller {
             Response::json([
                 'success' => true,
                 'message' => 'User deleted',
-                'user' => $user
             ]);
         } catch (Exception $e) {
             Response::json([
